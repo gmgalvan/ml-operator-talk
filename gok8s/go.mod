@@ -1,4 +1,4 @@
-module github.com/gdnTalk/gok8s
+module github.com/ml-operator-talk/gok8s
 
 go 1.16
 
