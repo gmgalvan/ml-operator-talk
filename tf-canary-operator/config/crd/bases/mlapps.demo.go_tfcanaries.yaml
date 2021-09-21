@@ -1,0 +1,73 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.4.1
+  creationTimestamp: null
+  name: tfcanaries.mlapps.demo.go
+spec:
+  group: mlapps.demo.go
+  names:
+    kind: TfCanary
+    listKind: TfCanaryList
+    plural: tfcanaries
+    singular: tfcanary
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: TfCanary is the Schema for the tfcanaries API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: TfCanarySpec defines the desired state of TfCanary
+            properties:
+              models:
+                description: Models are the tensorflow containers running with their
+                  respective models
+                items:
+                  properties:
+                    location:
+                      type: string
+                    name:
+                      type: string
+                    weight:
+                      format: int32
+                      type: integer
+                  required:
+                  - location
+                  - name
+                  - weight
+                  type: object
+                type: array
+            required:
+            - models
+            type: object
+          status:
+            description: TfCanaryStatus defines the observed state of TfCanary
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

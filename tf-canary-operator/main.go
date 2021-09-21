@@ -33,6 +33,7 @@ import (
 
 	mlappsv1alpha1 "github.com/ml-operator-talk/tf-canary-operator/api/v1alpha1"
 	"github.com/ml-operator-talk/tf-canary-operator/controllers"
+	istv1alpha3 "istio.io/client-go/pkg/clientset/versioned/scheme"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -45,6 +46,8 @@ func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
 	utilruntime.Must(mlappsv1alpha1.AddToScheme(scheme))
+
+	utilruntime.Must(istv1alpha3.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 
