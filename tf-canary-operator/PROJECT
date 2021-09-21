@@ -7,4 +7,14 @@ plugins:
   sdk.x-openshift.io/v1: {}
 projectName: tf-canary-operator
 repo: github.com/ml-operator-talk/tf-canary-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: demo.go
+  group: mlapps
+  kind: TfCanary
+  path: github.com/ml-operator-talk/tf-canary-operator/api/v1alpha1
+  version: v1alpha1
 version: "3"

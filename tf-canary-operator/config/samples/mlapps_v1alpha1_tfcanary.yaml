@@ -1,0 +1,7 @@
+apiVersion: mlapps.demo.go/v1alpha1
+kind: TfCanary
+metadata:
+  name: tfcanary-sample
+spec:
+  # Add fields here
+  foo: bar

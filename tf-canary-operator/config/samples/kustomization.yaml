@@ -1,0 +1,4 @@
+## Append samples you want in your CSV to this file as resources ##
+resources:
+- mlapps_v1alpha1_tfcanary.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples
