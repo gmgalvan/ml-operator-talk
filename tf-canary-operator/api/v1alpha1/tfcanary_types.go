@@ -28,8 +28,14 @@ type TfCanarySpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of TfCanary. Edit tfcanary_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// Models are the tensorflow containers running with their respective models
+	Models []Model `json:"models"`
+}
+
+type Model struct {
+	Name     string `json:"name"`
+	Location string `json:"location"`
+	Weight   int32  `json:"weight"`
 }
 
 // TfCanaryStatus defines the observed state of TfCanary
@@ -42,6 +48,7 @@ type TfCanaryStatus struct {
 //+kubebuilder:subresource:status
 
 // TfCanary is the Schema for the tfcanaries API
+//+kubebuilder:subresource:status
 type TfCanary struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
