@@ -3,5 +3,10 @@ kind: TfCanary
 metadata:
   name: tfcanary-sample
 spec:
-  # Add fields here
-  foo: bar
+  models:
+    - name: "resnet50"
+      location: "gs://clean-pen-305004-bucket/resnet_50"
+      weight: 50
+    - name: "resnet101"
+      location: "gs://clean-pen-305004-bucket/resnet_101"
+      weight: 50
