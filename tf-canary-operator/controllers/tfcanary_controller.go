@@ -38,8 +38,8 @@ import (
 	ctrllog "sigs.k8s.io/controller-runtime/pkg/log"
 )
 
-// TFCanary reconciles a TFCanary object
-type TFCanaryReconciler struct {
+// TfCanaryReconciler reconciles a TFCanary object
+type TfCanaryReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
 }
@@ -64,14 +64,14 @@ type TFCanaryReconciler struct {
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.8.3/pkg/reconcile
-func (r *TFCanaryReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *TfCanaryReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := ctrllog.FromContext(ctx)
 	// Fetch TFCanary
-	tfCanaryDeploy := &mlappsv1alpha1.TFCanary{}
+	tfCanaryDeploy := &mlappsv1alpha1.TfCanary{}
 	err := r.Get(ctx, req.NamespacedName, tfCanaryDeploy)
 	if err != nil {
 		if errors.IsNotFound(err) {
-			log.Info("TFCanary resource not found. Ignoring since object must be delete")
+			log.Info("TfCanary resource not found. Ignoring since object must be delete")
 			return ctrl.Result{}, nil
 		}
 	}
@@ -213,7 +213,7 @@ func (r *TFCanaryReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	return ctrl.Result{}, nil
 }
 
-func (r *TFCanaryReconciler) createWeightedVirtualService(tfCanrayDep mlappsv1alpha1.TFCanary) *istiov1alpha3.VirtualService {
+func (r *TfCanaryReconciler) createWeightedVirtualService(tfCanrayDep mlappsv1alpha1.TfCanary) *istiov1alpha3.VirtualService {
 	gatewayName := tfCanrayDep.Name + "-gateway"
 	routeDestination := []*istionetworkv1alpha3.HTTPRouteDestination{}
 	for _, model := range tfCanrayDep.Spec.Models {
@@ -250,7 +250,7 @@ func (r *TFCanaryReconciler) createWeightedVirtualService(tfCanrayDep mlappsv1al
 	return vs
 }
 
-func (r *TFCanaryReconciler) createDestinationRules(tfCanrayDep mlappsv1alpha1.TFCanary) *istiov1alpha3.DestinationRule {
+func (r *TfCanaryReconciler) createDestinationRules(tfCanrayDep mlappsv1alpha1.TfCanary) *istiov1alpha3.DestinationRule {
 	subsets := []*istionetworkv1alpha3.Subset{}
 	for _, model := range tfCanrayDep.Spec.Models {
 		subsets = append(subsets, &istionetworkv1alpha3.Subset{
@@ -275,7 +275,7 @@ func (r *TFCanaryReconciler) createDestinationRules(tfCanrayDep mlappsv1alpha1.T
 	return dr
 }
 
-func (r *TFCanaryReconciler) ensureGateway(tfCanrayDep mlappsv1alpha1.TFCanary) *istiov1alpha3.Gateway {
+func (r *TfCanaryReconciler) ensureGateway(tfCanrayDep mlappsv1alpha1.TfCanary) *istiov1alpha3.Gateway {
 	gateway := &istiov1alpha3.Gateway{
 		TypeMeta: metav1.TypeMeta{
 			Kind: "Gateway",
@@ -302,7 +302,7 @@ func (r *TFCanaryReconciler) ensureGateway(tfCanrayDep mlappsv1alpha1.TFCanary) 
 	return gateway
 }
 
-func (r *TFCanaryReconciler) modelDeployment(ctx context.Context, tfCanrayDep mlappsv1alpha1.TFCanary, model mlappsv1alpha1.Model) *appsv1.Deployment {
+func (r *TfCanaryReconciler) modelDeployment(ctx context.Context, tfCanrayDep mlappsv1alpha1.TfCanary, model mlappsv1alpha1.Model) *appsv1.Deployment {
 	modelBasePath := fmt.Sprintf("--model_base_path=%v", model.Location)
 	modelName := fmt.Sprintf("--model_name=%v", tfCanrayDep.Name)
 	deploymentModel := &appsv1.Deployment{
@@ -354,7 +354,7 @@ func (r *TFCanaryReconciler) modelDeployment(ctx context.Context, tfCanrayDep ml
 	return deploymentModel
 }
 
-func (r *TFCanaryReconciler) modelService(ctx context.Context, tfCanrayDep mlappsv1alpha1.TFCanary) *v1.Service {
+func (r *TfCanaryReconciler) modelService(ctx context.Context, tfCanrayDep mlappsv1alpha1.TfCanary) *v1.Service {
 	svc := &v1.Service{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      tfCanrayDep.Name,
@@ -383,8 +383,8 @@ func (r *TFCanaryReconciler) modelService(ctx context.Context, tfCanrayDep mlapp
 }
 
 // SetupWithManager sets up the controller with the Manager.
-func (r *TFCanaryReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *TfCanaryReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&mlappsv1alpha1.TFCanary{}).
+		For(&mlappsv1alpha1.TfCanary{}).
 		Complete(r)
 }
