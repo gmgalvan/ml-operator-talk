@@ -31,42 +31,43 @@ func main() {
 		panic(err.Error())
 	}
 
-	//  Create a GVR which represents an Virtul Service. (/apis/networking.istio.io/v1alpha3)
+	//  Create a GVR which represents an gateway. (/apis/networking.istio.io/v1alpha3)
 	gatewayGVR := schema.GroupVersionResource{
 		Group:    "networking.istio.io",
-		Version:  "v1alpha3",
+		Version:  "v1beta1",
 		Resource: "gateways",
 	}
 
-	gateway := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"apiVersion": "networking.istio.io/v1alpha3",
-			"kind":       "Gateway",
-			"metadata": map[string]interface{}{
-				"name": "hello-app-gateway",
+	gateway := &unstructured.Unstructured{}
+	gateway.SetUnstructuredContent(map[string]interface{}{
+		"apiVersion": "networking.istio.io/v1beta1",
+		"kind":       "Gateway",
+		"metadata": map[string]interface{}{
+			"name": "image-classifier-gateway",
+		},
+		"spec": map[string]interface{}{
+			"selector": map[string]interface{}{
+				"istio": "ingressgateway",
 			},
-			"spec": map[string]interface{}{
-				"selector": map[string]interface{}{
-					"istio": "ingressgateway",
-				},
-				"servers": []map[string]interface{}{
-					{
-						"port": map[string]interface{}{
-							"number":   80,
-							"name":     "http",
-							"protocol": "HTTP",
-						},
-						"hosts": []string{
-							"*",
-						},
+			"servers": []map[string]interface{}{
+				{
+					"port": map[string]interface{}{
+						"number":   80,
+						"name":     "http",
+						"protocol": "HTTP",
+					},
+					"hosts": []string{
+						"*",
 					},
 				},
 			},
 		},
-	}
+	})
+
 	//  Create a Virtual services
 	_, err = dynamicClient.Resource(gatewayGVR).Namespace("default").Create(ctx, gateway, metav1.CreateOptions{})
 	if err != nil {
 		panic(err.Error())
 	}
+
 }

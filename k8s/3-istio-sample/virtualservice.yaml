@@ -14,10 +14,10 @@ spec:
         subset: hello-app-v1
         port:
           number: 80
-      weight: 10
+      weight: 0
     - destination:
         host: hello-app
         subset: hello-app-v2
         port:
           number: 80
-      weight: 90
+      weight: 100

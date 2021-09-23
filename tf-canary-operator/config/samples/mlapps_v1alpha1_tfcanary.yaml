@@ -6,7 +6,7 @@ spec:
   models:
     - name: "resnet50"
       location: "gs://clean-pen-305004-bucket/resnet_50"
-      weight: 50
+      weight: 100
     - name: "resnet101"
       location: "gs://clean-pen-305004-bucket/resnet_101"
-      weight: 50
+      weight: 0

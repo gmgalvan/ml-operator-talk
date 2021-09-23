@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: image-classifier-resnet50
-  namespace: example
   labels:
     app: image-classifier
     version: resnet50
